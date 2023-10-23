@@ -1,0 +1,10 @@
+479472dc0e8e6a646574455736b792bb *DESCRIPTION
+f602c7171baaa6ba3b83ed35f908ee51 *NAMESPACE
+9020a57f1d9758a0e91ce7e3b0083a4e *R/ExpectedRep.R
+056bdb703815aab668c033680f505942 *R/HelperFxns.R
+248ce3df901d06f44cea9e5d27086489 *R/ObservedRep.R
+0c0f43ecc5ed1feb3ac342cf56a046f1 *R/VarRep.R
+7080893e02c49cd296d4424b9be55069 *build/partial.rdb
+07c3417cd4a5bf7033bb9e5de8e7a65f *man/ExpectedRepresentation.Rd
+e84e1f9913afadc0eac04fe1f9bb98f9 *man/ObservedRepresentation.Rd
+bb587c3e12c59eb0507acc344d074dc8 *man/SDRepresentation.Rd
