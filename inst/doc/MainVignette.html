@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="date" content="2025-01-14" />
+
+<title>DescriptiveRepresentationCalculator Package Tutorial</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">DescriptiveRepresentationCalculator Package
+Tutorial</h1>
+<h4 class="date">2025-01-14</h4>
+
+
+
+<!--- 
+  This vignette is inspired by the paper: 
+  John Gerring, Connor T. Jerzak, Erzen Oncel. (2024),
+  *The Composition of Descriptive Representation*,
+  American Political Science Review, 118(2): 784-801.
+  https://doi.org/10.1017/S0003055423000680
+--->
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p><code>DescriptiveRepresentation</code> is an <code>R</code> package
+for measuring descriptive representation in political bodies. It
+implements key functions from Gerring, Jerzak, and Oncel (2024),
+offering an accessible approach to modeling:</p>
+<ul>
+<li>Expected representation under a random sampling model,</li>
+<li>Observed representation for a given body, and</li>
+<li>Unexplained variance in representation (i.e., representation
+residuals) under that random sampling model.</li>
+</ul>
+<p>The package therefore provides three main functions:</p>
+<ul>
+<li><code>ExpectedRepresentation()</code></li>
+<li><code>ObservedRepresentation()</code></li>
+<li><code>SDRepresentation()</code></li>
+</ul>
+<p>Each function measures a slightly different concept linked to the
+ideas in Gerring, Jerzak, and Oncel (2024). In this vignette, we show
+how to install and use these functions, illustrate a few worked
+examples, and discuss conceptual underpinnings relevant to descriptive
+representation. Installation</p>
+<p>To install and load the
+<code>DescriptiveRepresentationCalculator</code> package, run:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># or install.packages(&quot;DescriptiveRepresentation&quot;)</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># install.packages(&quot;remotes&quot;)  # Install remotes if not already installed</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># remotes::install_github(&quot;cjerzak/DescriptiveRepresentation-software/DescriptiveRepresentation&quot;)</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">library</span>(DescriptiveRepresentationCalculator)</span></code></pre></div>
+</div>
+<div id="background" class="section level1">
+<h1>Background</h1>
+<p>How well do political bodies reflect the demographic features of the
+population they serve? This question is at the heart of descriptive
+representation, and the work of Gerring, Jerzak, and Oncel (2024) offers
+a systematic way to measure and analyze this phenomenon.</p>
+<p>The approach builds on the Rose Index of Proportionality that
+captures how far a political body’s group shares deviate from the
+population’s group shares. Concretely: <span class="math display">\[
+R = 1 - \frac{1}{2} \sum_{k=1}^{K} |g_{p_k} - G_{b_k}|
+\]</span> where <span class="math inline">\(g_{p_k}\)</span> is the
+population share of group <span class="math inline">\(k\)</span>, and
+<span class="math inline">\(G_{b_k}\)</span> is that group’s share in
+the body of interest <span class="math inline">\(b\)</span>. The index
+ranges from 0 (no descriptive representation) to 1 (perfect descriptive
+representation).</p>
+<p>Note that there are a range of other possible weighting factors in
+the equation. In the package, the default parameters
+(<code>a = -0.5</code> and <code>b = 1</code>), producing the Rose
+Index. The user can modify the <code>a</code> and <code>b</code>
+parameters to fit other affine transformations of the underlying
+absolute deviations: <span class="math display">\[
+R = a + b \sum_{k=1}^{K} |g_{p_k} - G_{b_k}|
+\]</span> The Rose Index has nice theoretical properties in that it is
+bounded between 0 (total representation mismatch) and 1 (complete match
+between elite and population group shares).</p>
+</div>
+<div id="random-sampling-model" class="section level1">
+<h1>Random Sampling Model</h1>
+<p>One of the insights of Gerring, Jerzak, and Oncel (2024) is to
+compare observed descriptive representation to what would be expected
+under a random sampling model—if individuals (or group shares) were
+randomly drawn into the political body.</p>
+<p>This expected value establishes a baseline: how much shortfall or
+surplus we might attribute purely to compositional factors (like the
+body’s size or the population’s group diversity).</p>
+<p>Divergences from this random baseline can reveal additional,
+potentially systematic, sources of under- or over-representation.</p>
+</div>
+<div id="package-workflow" class="section level1">
+<h1>Package Workflow</h1>
+<ul>
+<li>Compute expected representation for your focal political body using
+ExpectedRepresentation(). This gives you the theoretical baseline if
+seats or positions were allocated proportionally by chance given the
+group shares.</li>
+<li>Compute observed representation using ObservedRepresentation(). This
+takes actual data on who occupies each seat (or the observed group
+shares in the body) and compares it to population-level group
+shares.</li>
+<li>Examine the difference between observed and expected values or
+compute the standard deviation of representation scores using
+SDRepresentation(), to assess how much variation is left unexplained by
+the random sampling model.</li>
+</ul>
+</div>
+<div id="expected-representation" class="section level1">
+<h1>1. Expected Representation</h1>
+<p>The function <code>ExpectedRepresentation()</code> computes the
+expected level of representation (the “expected Rose Index”) under a
+random sampling model:</p>
+<pre><code>ExpectedRepresentation(
+  PopShares, 
+  BodyN, 
+  a = -0.5, 
+  b = 1
+)</code></pre>
+<p>Arguments:</p>
+<pre><code>`PopShares`: Numeric vector of group-level population proportions (e.g., `c(0.25, 0.5, 0.25)`).
+`BodyN`: Integer, the size of the political body in question (e.g., `50L`).
+`a`, `b`: (Optional) Affine transformation parameters. By default, `a=−0.5`,`b=1` (for the Rose Index).</code></pre>
+<p>Returns: A single numeric value representing the expected
+representation score.</p>
+<div id="example" class="section level2">
+<h2>Example</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Suppose the population is split into 3 groups: 25%, 50%, 25%.</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co"># We have a political body (say, a legislature) of size 50.</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>PopShares_example <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">2</span><span class="sc">/</span><span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>BodySize_example <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>ExpectedRep <span class="ot">&lt;-</span> <span class="fu">ExpectedRepresentation</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="at">PopShares =</span> PopShares_example,</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="at">BodyN =</span> BodySize_example</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>)</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>ExpectedRep</span></code></pre></div>
+<pre><code>## [1] 0.9227715</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#&gt; Prints the expected representation under random sampling</span></span></code></pre></div>
+<p>In many settings, this expected value serves as the baseline to which
+we compare actual data. Larger bodies and more homogenous populations
+will tend to have higher expected representation scores under the random
+sampling model.</p>
+</div>
+</div>
+<div id="observed-representation" class="section level1">
+<h1>2. Observed Representation</h1>
+<p>To compare theory to reality, we compute the observed representation
+of any group in a political body:</p>
+<pre><code>ObservedRepresentation(
+  BodyMemberCharacteristics = NULL,
+  PopShares,
+  BodyShares = NULL,
+  a = -0.5,
+  b = 1
+)</code></pre>
+<p>Arguments:</p>
+<ul>
+<li><code>BodyMemberCharacteristics</code>: A vector describing group
+identities for each member of the body. If supplied, the function
+automatically calculates the group share distribution.</li>
+<li><code>PopShares</code>: Numeric vector of population-level group
+proportions (with names matching those in
+<code>BodyMemberCharacteristics</code>).</li>
+<li><code>BodyShares</code>: (Optional) A numeric vector with the same
+structure as PopShares that directly specifies each group’s share in the
+body. If not NULL, overrides BodyMemberCharacteristics. <code>a</code>,
+<code>b</code>: Affine transformation parameters, defaulting to
+(<code>−0.5</code>,<code>1</code>).</li>
+</ul>
+<p>Returns: A single numeric value for the observed representation
+score.</p>
+<div id="example-1" class="section level2">
+<h2>Example</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Observed scenario: A 6-seat body with members: &quot;A&quot;, &quot;A&quot;, &quot;C&quot;, &quot;A&quot;, &quot;C&quot;, &quot;A&quot;</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co"># The population shares are: A=1/4, B=2/4, C=1/4.</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>ObsRep <span class="ot">&lt;-</span> <span class="fu">ObservedRepresentation</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  <span class="at">BodyMemberCharacteristics =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="at">PopShares =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span><span class="ot">=</span><span class="fl">0.25</span>, <span class="st">&quot;B&quot;</span><span class="ot">=</span><span class="fl">0.50</span>, <span class="st">&quot;C&quot;</span><span class="ot">=</span><span class="fl">0.25</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>ObsRep</span></code></pre></div>
+<pre><code>## [1] 0.5</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co">#&gt; Prints the observed representation index</span></span></code></pre></div>
+<p>If group <code>&quot;B&quot;</code> had no seats here, we’d expect a larger
+observed discrepancy from the population’s proportions, lowering the
+representation score.</p>
+</div>
+</div>
+<div id="standard-deviation-of-representation" class="section level1">
+<h1>3. Standard Deviation of Representation</h1>
+<p>Finally, <code>SDRepresentation()</code> estimates the extent to
+which the observed representation can vary around its expected value
+under random sampling. It performs Monte Carlo simulations, drawing
+random compositions of the body and re-computing the representation
+score each time:</p>
+<pre><code>SDRepresentation(
+  PopShares, 
+  BodyN, 
+  a = -0.5, 
+  b = 1, 
+  nMonte = 10000
+)</code></pre>
+<p>Arguments:</p>
+<ul>
+<li><code>PopShares</code>: Numeric vector of group-level population
+proportions.</li>
+<li><code>BodyN</code>: Size of the political body.</li>
+<li><code>a</code>, <code>b</code>: Affine transformation
+parameters.</li>
+<li><code>nMonte</code>: Number of Monte Carlo draws used to approximate
+the variance.</li>
+</ul>
+<p>Returns: A single numeric value summarizing how much representation
+fluctuates (in standard deviation units) around the expected
+representation under a random selection model.</p>
+<div id="example-2" class="section level2">
+<h2>Example</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>SDRep <span class="ot">&lt;-</span> <span class="fu">SDRepresentation</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="at">PopShares =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.25</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="at">BodyN =</span> <span class="dv">50</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="at">nMonte =</span> <span class="dv">10000</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>)</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>SDRep</span></code></pre></div>
+<pre><code>## [1] 0.04071426</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co">#&gt; Prints the residual standard deviation</span></span></code></pre></div>
+<p>In contexts with many social groups or a smaller legislative body,
+the variance (and thus the <code>SDRepresentation</code>) tends to be
+larger.</p>
+</div>
+</div>
+<div id="interpretation" class="section level1">
+<h1>Interpretation</h1>
+<p>Expected Representation (<code>ExpectedRepresentation()</code>) helps
+analysts understand the baseline level of representation when selection
+is effectively random.</p>
+<p>Conversely, Observed Representation
+(<code>ObservedRepresentation()</code>) is the real-world result,
+showing how close or far a body’s membership is from the population
+distribution.</p>
+<p>SDRepresentation (<code>SDRepresentation()</code>) quantifies how
+much randomness alone could explain variation in representation,
+shedding light on when observed deviations might be plausibly attributed
+to other (non-random) factors like institutional rules or
+discrimination.</p>
+<div id="use-cases" class="section level2">
+<h2>Use Cases</h2>
+<ul>
+<li>Policy Analysis: Evaluate how well a legislature (or any political
+body) mirrors the underlying population demographics.</li>
+<li>Comparative Politics: Compare representation across countries or
+subnational regions, controlling for differences in the population’s
+group structure or body size.</li>
+<li>Power Analysis: Determine how much of the under-representation or
+over-representation could arise purely from chance due to small body
+sizes or population fragmentation.</li>
+</ul>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>The <code>DescriptiveRepresentation</code> package operationalizes
+key ideas about descriptive representation from Gerring, Jerzak, and
+Oncel (2024). By offering easy-to-use functions for measuring expected,
+observed, and residual variance in representation, the package helps
+scholars, analysts, and policymakers investigate how factors like body
+size and population diversity shape the composition of political bodies
+worldwide.</p>
+<p>We hope this vignette gets you started! For any questions or
+feedback, feel free to open an issue on our <a href="https://github.com/cjerzak/DescriptiveRepresentationCalculator-software">GitHub</a>
+repository.</p>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<pre><code>@article{gerring2024composition,
+  title={The Composition of Descriptive Representation},
+  author={Gerring, John and Connor T. Jerzak and Erzen \&quot;{O}ncel},
+  journal={American Political Science Review},
+  year={2024},
+  volume={118},
+  number={2},
+  pages={784-801}
+}</code></pre>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

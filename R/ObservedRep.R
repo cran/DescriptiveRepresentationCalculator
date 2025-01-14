@@ -8,7 +8,7 @@
 #'
 #' @param BodyMemberCharacteristics A vector specifying the characteristics for members of a political body.
 #'
-#' @param PopShares A numeric vector specifying population shares of identities specified in the body-member characteristics input. The names of the entries in `PopShares` should correspond to identities in that body-member characteristics input  (see Example).
+#' @param PopShares A numeric vector specifying population shares of identities specified in the body-member characteristics input. The names of the entries in `PopShares` should correspond to identities in that body-member characteristics input (see Example).
 #'
 #' @param BodyShares (optional) A numeric vector with same structure as `PopShares` specifying group population shares of a given body. If specified, used by default instead of `BodyMemberCharacteristics`.
 #'
@@ -24,9 +24,15 @@
 #'
 #' ObsRep <- ObservedRepresentation(
 #'                         BodyMemberCharacteristics = c("A","A","C","A","C","A"),
-#'                         PopShares = c("A"=1/3,"B"=2/3, "C"=1/3))
+#'                         PopShares = c("A"=1/4,"B"=2/4, "C"=1/4))
 #'
 #' print( ObsRep )
+#' 
+#' @seealso
+#' \itemize{
+#' \item \code{\link{ExpectedRepresentation}} for calculating expected representation scores under random sampling. 
+#' \item \code{\link{SDRepresentation}} for calculating representation unexplained under the random sampling model. 
+#' } 
 #'
 #' @export
 #' @md
@@ -35,16 +41,17 @@ ObservedRepresentation <- function( BodyMemberCharacteristics = NULL,
                                     PopShares,
                                     BodyShares = NULL,
                                     a = -0.5, b = 1){
+  # if BodyShares 
   if(is.null(BodyShares)){
     BodyShares <- prop.table(table( BodyMemberCharacteristics) )
     BodyShares <- BodyShares[names(PopShares)]
-    ObservedIndex <- a*sum(abs(PopShares - BodyShares),
-                           a.rm=T) + b
+    BodyShares[is.na(BodyShares)] <- 0 
   }
-  if(!is.null(BodyShares)){
-    ObservedIndex <- a*sum(abs(PopShares-BodyShares),na.rm=T) + b
-  }
-  if(all(is.na(f2n(BodyShares)))){ ObservedIndex <- NA }
+  
+  # if any body or pop shares are NA, return NA
+  if(any(is.na(BodyShares <- f2n(BodyShares)))){ return( ObservedIndex <- NA )  }
+  if(any(is.na(PopShares <- f2n(PopShares)))){ return( ObservedIndex <- NA )  }
 
-  return( ObservedIndex )
+  # compute observed representation index 
+  return( ObservedIndex <- a*sum(abs(PopShares-BodyShares),na.rm=T) + b )
 }

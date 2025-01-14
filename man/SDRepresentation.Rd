@@ -27,23 +27,29 @@ representation under a random sampling model.
 }
 \description{
 Finds the residual standard deviation when using the expected representation for any group
-in a political body to predict observed representation as described in Gerring, Jerzak and Oncel, 2023.
+in a political body to predict observed representation as described in Gerring, Jerzak and Oncel (2024).
 }
 \section{References}{
 
 \itemize{
-\item John Gerring, Connor T. Jerzak, Erzen Oncel. (2023),
+\item John Gerring, Connor T. Jerzak, Erzen Oncel. (2024),
 The Composition of Descriptive Representation,
-\emph{American Political Science Review}, p. 1-18.
+\emph{American Political Science Review}, 118(2): 784-801.
 \doi{10.1017/S0003055423000680}
 }
 }
 
 \examples{
 
-SDRep <- SDRepresentation(PopShares = c(1/3, 2/3, 1/3),
+SDRep <- SDRepresentation(PopShares = c(1/4, 2/4, 1/4),
                                 BodyN = 50)
 
 print( SDRep )
 
+}
+\seealso{
+\itemize{
+\item \code{\link{ExpectedRepresentation}} for calculating expected representation scores under random sampling.
+\item \code{\link{ObservedRepresentation}} for calculating representation scores from observed data.
+}
 }

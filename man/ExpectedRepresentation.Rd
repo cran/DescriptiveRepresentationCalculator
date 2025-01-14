@@ -21,23 +21,29 @@ By default, \code{a=-0.5} and \code{b=1} so that the expected Rose Index of Prop
 The expected degree of representation (a scalar).
 }
 \description{
-Finds the degree of expected representation for any group in a political body under a random sampling model as described in Gerring, Jerzak and Oncel (2023).
+Finds the degree of expected representation for any group in a political body under a random sampling model as described in Gerring, Jerzak and Oncel (2024).
 }
 \section{References}{
 
 \itemize{
-\item John Gerring, Connor T. Jerzak, Erzen Oncel. (2023),
+\item John Gerring, Connor T. Jerzak, Erzen Oncel. (2024),
 The Composition of Descriptive Representation,
-\emph{American Political Science Review}, p. 1-18.
+\emph{American Political Science Review}, 118(2): 784-801.
 \doi{10.1017/S0003055423000680}
 }
 }
 
 \examples{
 
-ExpectedRep <- ExpectedRepresentation(PopShares = c(1/3, 2/3, 1/3),
+ExpectedRep <- ExpectedRepresentation(PopShares = c(1/4, 2/4, 1/4),
                                       BodyN = 50)
 
 print( ExpectedRep )
 
+}
+\seealso{
+\itemize{
+\item \code{\link{ObservedRepresentation}} for calculating representation scores from observed data.
+\item \code{\link{SDRepresentation}} for calculating representation unexplained under the random sampling model.
+}
 }
