@@ -41,3 +41,27 @@ SDRep <- SDRepresentation(
 SDRep
 #> Prints the residual standard deviation
 
+## -----------------------------------------------------------------------------
+# Same body and population as before
+BodyMembers <- c("A", "A", "C", "A", "C", "A")
+PopShares_example <- c("A" = 0.25, "B" = 0.50, "C" = 0.25)
+
+# Compute relative representation (observed - expected)
+RelRep <- RelativeRepresentation(
+  BodyMemberCharacteristics = BodyMembers,
+  PopShares = PopShares_example
+)
+
+RelRep
+#> Prints how much observed representation differs from expected
+
+# Standardized version (in SD units)
+RelRep_std <- RelativeRepresentation(
+  BodyMemberCharacteristics = BodyMembers,
+  PopShares = PopShares_example,
+  standardize = TRUE
+)
+
+RelRep_std
+#> Prints the standardized relative representation
+

@@ -1,6 +1,6 @@
 Package: DescriptiveRepresentationCalculator
 Title: Characterizing Observed and Expected Representation
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: c(person(given = "Connor", family = "Jerzak", 
 		    role = c("aut", "cre"),
                     email = "connor.jerzak@gmail.com", 
@@ -17,14 +17,15 @@ Depends: R (>= 3.3.3)
 License: GPL-3
 Encoding: UTF-8
 Imports: stats
-Suggests: knitr
+Suggests: knitr, testthat (>= 3.0.0)
 VignetteBuilder: knitr
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 NeedsCompilation: no
-Packaged: 2025-01-14 22:22:29 UTC; cjerzak
-Author: Connor Jerzak [aut, cre] (<https://orcid.org/0000-0003-1914-8905>),
-  John Gerring [aut] (<https://orcid.org/0000-0001-9858-2050>),
-  Erzen Oncel [aut] (<https://orcid.org/0000-0001-9372-1090>)
+Packaged: 2025-12-14 21:51:32 UTC; cjerzak
+Author: Connor Jerzak [aut, cre] (ORCID:
+    <https://orcid.org/0000-0003-1914-8905>),
+  John Gerring [aut] (ORCID: <https://orcid.org/0000-0001-9858-2050>),
+  Erzen Oncel [aut] (ORCID: <https://orcid.org/0000-0001-9372-1090>)
 Maintainer: Connor Jerzak <connor.jerzak@gmail.com>
 Repository: CRAN
-Date/Publication: 2025-01-14 22:40:06 UTC
+Date/Publication: 2025-12-14 22:20:02 UTC
